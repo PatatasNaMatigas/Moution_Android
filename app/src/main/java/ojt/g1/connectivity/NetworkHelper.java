@@ -56,6 +56,7 @@ public class NetworkHelper {
      * @param port The server's port
      */
     public void connectToServer(String ip, int port) {
+        running = true;
         new Thread(() -> {
             try {
                 socket = new Socket(ip, port);
