@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Moution</string>
+    <string name="desc">Moution is an application that transforms your device to a mouse. Moution also comes with other features such as macros, keyboard, keyboard shortcuts, and more. </string>
 </resources>

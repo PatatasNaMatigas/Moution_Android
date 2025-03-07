@@ -17,6 +17,12 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+
+    repositories {
+        google()
+        mavenCentral()
+        maven { setUrl("https://jitpack.io") }
+    }
 }
 
 rootProject.name = "Moution"

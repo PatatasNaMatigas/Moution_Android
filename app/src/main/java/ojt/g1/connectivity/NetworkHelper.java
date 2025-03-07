@@ -1,9 +1,15 @@
 package ojt.g1.connectivity;
 
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+
 import java.io.*;
 import java.net.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import ojt.g1.moution.Moution;
 
 public class NetworkHelper {
     private Socket socket;
@@ -55,17 +61,20 @@ public class NetworkHelper {
      * @param ip The server's IP address
      * @param port The server's port
      */
-    public void connectToServer(String ip, int port) {
+    public void connectToServer(Context context, String ip, int port) {
         running = true;
         new Thread(() -> {
             try {
                 socket = new Socket(ip, port);
                 writer = new PrintWriter(socket.getOutputStream(), true);
+                Log.d("Moution - CONNECT", "CONNECT" + socket.getInetAddress());
 
                 while (running) {
                     String message = messageQueue.take(); // Waits for a message to send
                     writer.println(message);
                 }
+
+                context.startActivity(new Intent(context, Moution.class));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -78,15 +87,19 @@ public class NetworkHelper {
      */
     public void sendMessage(String message) {
         messageQueue.offer(message); // Add message to queue (non-blocking)
+        Log.d("Moution - SEND", "SENT: " + message);
     }
 
     /**
      * Closes the connection
      */
-    public void close() {
+    public void close(Context context) {
         running = false;
         try {
             if (socket != null) socket.close();
+            if (writer != null) writer.close();
+            if (reader != null) reader.close();
+            context.startActivity(new Intent(context, Moution.class));
         } catch (Exception e) {
             e.printStackTrace();
         }

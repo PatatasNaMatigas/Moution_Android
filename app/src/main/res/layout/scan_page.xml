@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Welcome To Moution"
+        android:autoSizeMinTextSize="1dp"
+        android:autoSizeMaxTextSize="100dp"
+        android:autoSizeStepGranularity="1dp"
+        android:autoSizeTextType="uniform"
+        android:textAlignment="center"
+        android:fontFamily="@font/citrus"
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintHeight_percent="0.08"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/sample_icon"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.05"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/desc"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/desc"
+        android:autoSizeMinTextSize="1dp"
+        android:autoSizeMaxTextSize="20dp"
+        android:autoSizeStepGranularity="1dp"
+        android:autoSizeTextType="uniform"
+        android:textAlignment="center"
+        android:justificationMode="inter_word"
+        android:fontFamily="@font/citrus"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintHeight_percent="0.08"
+        app:layout_constraintTop_toBottomOf="@id/icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/scan_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Scan Device"
+        android:autoSizeMinTextSize="1dp"
+        android:autoSizeMaxTextSize="40dp"
+        android:autoSizeStepGranularity="1dp"
+        android:autoSizeTextType="uniform"
+        android:textAlignment="center"
+        android:justificationMode="inter_word"
+        android:fontFamily="@font/citrus"
+        app:layout_constraintTop_toBottomOf="@id/desc"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.6"
+        app:layout_constraintHeight_percent="0.08"
+        app:layout_constraintWidth_percent="0.9" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
