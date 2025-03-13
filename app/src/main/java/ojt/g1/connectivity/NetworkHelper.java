@@ -30,7 +30,7 @@ public class NetworkHelper {
      */
     public void startServer(int port, MessageListener listener) {
         new Thread(() -> {
-            while (true) { // Infinite loop to restart after disconnection
+            while (true) {
                 try (ServerSocket serverSocket = new ServerSocket(port)) {
                     System.out.println("Waiting for connection...");
                     socket = serverSocket.accept();
@@ -75,8 +75,8 @@ public class NetworkHelper {
                 }
 
                 context.startActivity(new Intent(context, Moution.class));
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (IOException | InterruptedException e) {
+                close(context);
             }
         }).start();
     }

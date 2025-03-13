@@ -1,48 +1,69 @@
 package ojt.g1.layoutediting;
 
 import android.annotation.SuppressLint;
-import android.os.Bundle;
+import android.content.Context;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 
-import ojt.g1.moution.R;
+import java.util.ArrayList;
 
-public class LayoutEditor extends AppCompatActivity {
+import ojt.g1.uicustomization.LayoutData;
+
+public class LayoutEditor {
 
     private float lastTPX;
     private float lastTPY;
 
     @SuppressLint("ClickableViewAccessibility")
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_page);
+    public LayoutEditor(Context context, ConstraintLayout constraintLayout) {
+        ArrayList<View> allTouchables = LayoutData.getAllTouchables(constraintLayout);
+        boolean[] active = new boolean[allTouchables.size()];
+        TabHandles[] tabHandles = new TabHandles[allTouchables.size()];
 
-        View test = findViewById(R.id.trackpad);
-        TabHandles tabHandles = new TabHandles(this, findViewById(R.id.main_layout), test);
+        for (int i = 0; i < allTouchables.size(); i++) {
+            View view = allTouchables.get(i);
 
-        test.setOnTouchListener((v, event) -> {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    // Store the initial touch position (absolute to parent)
-                    lastTPX = event.getRawX() - v.getX();
-                    lastTPY = event.getRawY() - v.getY();
-                    return true;
+            ConstraintLayout parentLayout = (ConstraintLayout) view.getParent();
+            ConstraintSet constraintSet = new ConstraintSet();
+            constraintSet.clone(parentLayout);
+            constraintSet.clear(view.getId());
+            constraintSet.applyTo(parentLayout);
+            
+            int finalI = i;
+            view.setOnClickListener(v -> {
+                if (tabHandles[finalI] == null)
+                    tabHandles[finalI] = new TabHandles(context, constraintLayout, v);
+                active[finalI] = true;
+            });
 
-                case MotionEvent.ACTION_MOVE:
-                    // Move the view based on the absolute raw touch position
-                    float newX = event.getRawX() - lastTPX;
-                    float newY = event.getRawY() - lastTPY;
+            view.setOnTouchListener((v, event) -> {
+                if (active[finalI]) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            lastTPX = event.getRawX() - v.getX();
+                            lastTPY = event.getRawY() - v.getY();
+                            return false;
 
-                    v.setX(newX);
-                    v.setY(newY);
-                    tabHandles.updateTabs();
-                    return true;
-            }
-            return false;
-        });
+                        case MotionEvent.ACTION_MOVE:
+                            float newX = event.getRawX() - lastTPX;
+                            float newY = event.getRawY() - lastTPY;
 
+                            v.setX(newX);
+                            v.setY(newY);
+
+                            if (tabHandles[finalI] == null)
+                                tabHandles[finalI] = new TabHandles(context, constraintLayout, v);
+
+                            tabHandles[finalI].updateTabs();
+                            return true;
+                    }
+                }
+                return false;
+            });
+        }
     }
 }
