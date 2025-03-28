@@ -6,6 +6,8 @@ import android.os.SystemClock;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,11 +42,11 @@ public class Main extends AppCompatActivity {
 
         View trackpad = findViewById(R.id.trackpad);
         trackpad.setTag("trackpad|touchable");
-        Button lmb = findViewById(R.id.lmb);
+        ImageView lmb = findViewById(R.id.left_click_ic);
         lmb.setTag("lmb|touchable");
         View mmb = findViewById(R.id.scroll_wheel);
         mmb.setTag("mmb|touchable");
-        Button rmb = findViewById(R.id.rmb);
+        ImageView rmb = findViewById(R.id.right_click_ic);
         rmb.setTag("rmb|touchable");
 
         trackpad.setOnTouchListener((v, event) -> {
