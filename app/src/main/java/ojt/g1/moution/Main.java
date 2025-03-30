@@ -4,9 +4,10 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,14 +26,16 @@ public class Main extends AppCompatActivity {
     private static final float SENSITIVITY = 1.5f;
     private static final float MIN_MOVE_THRESHOLD = SENSITIVITY / 2;
     private static final float SCROLL_MOVE_THRESHOLD = 10;
+    private static final long DOUBLE_TAP_THRESHOLD = 300; // Max time between taps in ms
     private static float lastTPX;
     private static float lastTPY;
     private static float lastScrollY;
+    private static float lastScrollX;
+    private long lastTapTime = 0;
+    private boolean scrolling;
     private static NetworkHelper networkHelper;
     private static String SERVER_IP = "";
     private final int SERVER_PORT = 25135;
-    private static boolean isZooming = false;
-    private static ScaleGestureDetector scaleGestureDetector;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -44,45 +47,110 @@ public class Main extends AppCompatActivity {
         networkHelper.connectToServer(this, SERVER_IP, SERVER_PORT);
 
         View trackpad = findViewById(R.id.trackpad);
-        Button lmb = findViewById(R.id.lmb);
-        View mmb = findViewById(R.id.scroll_wheel);
-        Button rmb = findViewById(R.id.rmb);
         trackpad.setTag("trackpad|touchable");
+        ImageView lmb = findViewById(R.id.left_click_ic);
         lmb.setTag("lmb|touchable");
+        View mmb = findViewById(R.id.scroll_wheel);
         mmb.setTag("mmb|touchable");
+        ImageView rmb = findViewById(R.id.right_click_ic);
         rmb.setTag("rmb|touchable");
 
-        scaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.SimpleOnScaleGestureListener() {
-            private float lastScaleFactor = 1f;
+        trackpad.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    lastTPX = event.getX();
+                    lastTPY = event.getY();
 
-            @Override
-            public boolean onScale(ScaleGestureDetector detector) {
-                float scaleFactor = detector.getScaleFactor();
-
-                if (Math.abs(scaleFactor - lastScaleFactor) > 0.03f) {
-                    lastScaleFactor = scaleFactor;
-
-                    if (scaleFactor > 1) {
-                        networkHelper.sendMessage("zm%i");
-                    } else {
-                        networkHelper.sendMessage("zm%o");
+                    long currentTime = SystemClock.uptimeMillis();
+                    if (currentTime - lastTapTime <= DOUBLE_TAP_THRESHOLD) {
+                        networkHelper.sendMessage("a%lmb%d");
                     }
-                }
-                isZooming = true;
-                return true;
-            }
+                    lastTapTime = currentTime;
+                    return true;
+                case MotionEvent.ACTION_POINTER_DOWN:
+                    lastScrollY = event.getY(1);
+                    return true;
+                case MotionEvent.ACTION_MOVE:
+                    if (event.getPointerCount() == 1) {
+                        float deltaX = (event.getX() - lastTPX) * SENSITIVITY;
+                        float deltaY = (event.getY() - lastTPY) * SENSITIVITY;
 
-            @Override
-            public void onScaleEnd(ScaleGestureDetector detector) {
-                super.onScaleEnd(detector);
-                isZooming = false;
+                        if ((Math.abs(deltaX) > MIN_MOVE_THRESHOLD || Math.abs(deltaY) > MIN_MOVE_THRESHOLD)) {
+                            lastTPX = event.getX();
+                            lastTPY = event.getY();
+                            networkHelper.sendMessage("mm%" + deltaX + "|" + deltaY);
+                        }
+                    } else if (event.getPointerCount() == 2) {
+                        float deltaY = (event.getY(1) - lastScrollY);
+
+                        if (Math.abs(deltaY) > SCROLL_MOVE_THRESHOLD) {
+                            lastScrollY = event.getY(1);
+                            networkHelper.sendMessage("sc%" + -deltaY + "%y");
+                        }
+                        networkHelper.sendMessage("a%mmb%u");
+                    }
+                    return true;
+                case MotionEvent.ACTION_POINTER_UP:
+                    if (event.getPointerCount() == 2) {
+                        return true;
+                    }
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    networkHelper.sendMessage("a%lmb%u");
+                    return true;
             }
+            return false;
         });
 
-        trackpad.setOnTouchListener(getTrackpadTouchFunction());
-        lmb.setOnTouchListener(getLMBTouchFunction());
-        mmb.setOnTouchListener(getMMBTouchFunction());
-        rmb.setOnTouchListener(getRMBTouchFunction());
+        mmb.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    lastScrollY = event.getY();
+                    lastScrollX = event.getX();
+                    networkHelper.sendMessage("a%mmb%d");
+                    return true;
+                case MotionEvent.ACTION_MOVE:
+                    float deltaY = (event.getY() - lastScrollY);
+                    float deltaX = (event.getX() - lastScrollX);
+
+                    if (Math.abs(deltaY - deltaX) > 5 && Math.abs(deltaY) > SCROLL_MOVE_THRESHOLD) {
+                        lastScrollY = event.getY();
+                        networkHelper.sendMessage("sc%" + deltaY + "%y");
+                    } else if (Math.abs(deltaX - deltaY) > 5 && Math.abs(deltaX) > SCROLL_MOVE_THRESHOLD) {
+                        lastScrollX = event.getX();
+                        networkHelper.sendMessage("sc%" + deltaX + "%x");
+                    }
+                    networkHelper.sendMessage("a%mmb%u");
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    networkHelper.sendMessage("a%mmb%u");
+                    return true;
+            }
+            return false;
+        });
+
+        lmb.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    networkHelper.sendMessage("a%lmb%d");
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    networkHelper.sendMessage("a%lmb%u");
+                    return true;
+            }
+            return false;
+        });
+        rmb.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    networkHelper.sendMessage("a%rmb%d");
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    networkHelper.sendMessage("a%rmb%u");
+                    return true;
+            }
+            return false;
+        });
 
         findViewById(R.id.disconnect).setOnClickListener(v -> {
             networkHelper.close(this);
@@ -133,19 +201,14 @@ public class Main extends AppCompatActivity {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     lastScrollY = event.getY();
-                    networkHelper.sendMessage("a%mmb%d");
                     return true;
                 case MotionEvent.ACTION_MOVE:
-                    float deltaY = (event.getY() - lastScrollY);
+                    float deltaY = (event.getY() - lastScrollY) * SENSITIVITY;
 
                     if (Math.abs(deltaY) > SCROLL_MOVE_THRESHOLD) {
                         lastScrollY = event.getY();
-                        networkHelper.sendMessage("sc%" + deltaY + "%y");
+                        networkHelper.sendMessage("sc%" + deltaY);
                     }
-                    networkHelper.sendMessage("a%mmb%u");
-                    return true;
-                case MotionEvent.ACTION_UP:
-                    networkHelper.sendMessage("a%mmb%u");
                     return true;
             }
             return false;
@@ -155,40 +218,22 @@ public class Main extends AppCompatActivity {
     @SuppressLint("ClickableViewAccessibility")
     public static View.OnTouchListener getTrackpadTouchFunction() {
         return (v, event) -> {
-            scaleGestureDetector.onTouchEvent(event);
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    lastTPX = event.getX();
+                    lastTPY = event.getY();
+                    return true;
+                case MotionEvent.ACTION_MOVE:
+                    float deltaX = (event.getX() - lastTPX) * SENSITIVITY;
+                    float deltaY = (event.getY() - lastTPY) * SENSITIVITY;
 
-            if (event.getPointerCount() > 1) {
-                isZooming = true;
-            }
-
-            if (!isZooming) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
+                    if (Math.abs(deltaX) > MIN_MOVE_THRESHOLD || Math.abs(deltaY) > MIN_MOVE_THRESHOLD) {
                         lastTPX = event.getX();
                         lastTPY = event.getY();
-                        return true;
-                    case MotionEvent.ACTION_MOVE:
-                        float deltaX = (event.getX() - lastTPX) * SENSITIVITY;
-                        float deltaY = (event.getY() - lastTPY) * SENSITIVITY;
-
-                        if (Math.abs(deltaX) > MIN_MOVE_THRESHOLD || Math.abs(deltaY) > MIN_MOVE_THRESHOLD) {
-                            lastTPX = event.getX();
-                            lastTPY = event.getY();
-                            networkHelper.sendMessage("mm%" + deltaX + "|" + deltaY);
-                        }
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                        isZooming = false;
-                        return true;
-                }
+                        networkHelper.sendMessage("mm%" + deltaX + "|" + deltaY);
+                    }
+                    return true;
             }
-
-            if (event.getPointerCount() > 1) {
-                isZooming = true;
-            } else if (event.getPointerCount() == 1) {
-                isZooming = false;
-            }
-
             return false;
         };
     }

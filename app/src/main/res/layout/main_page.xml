@@ -3,6 +3,7 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#252525"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
@@ -10,84 +11,103 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#ABABAB"
+        android:background="#2F2F3C"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <Button
+        <ImageButton
             android:id="@+id/settings"
             android:layout_width="0dp"
+            android:background="#00000000"
+            android:src="@drawable/settings"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
+            android:scaleType="centerInside"
             android:layout_weight="1" />
 
-        <Button
+        <ImageButton
             android:id="@+id/edit_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:background="#00000000"
+            android:src="@drawable/edit_layout"
             android:layout_marginStart="10dp"
+            android:scaleType="centerInside"
             android:layout_weight="1" />
 
-        <Button
+        <ImageButton
             android:id="@+id/macro"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:background="#00000000"
+            android:src="@drawable/macro"
             android:layout_marginStart="10dp"
+            android:scaleType="centerInside"
             android:layout_weight="1" />
 
-        <Button
+        <ImageButton
             android:id="@+id/hotkeys"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:background="#00000000"
+            android:src="@drawable/shortcuts"
             android:layout_marginStart="10dp"
+            android:scaleType="centerInside"
             android:layout_marginEnd="10dp"
             android:layout_weight="1" />
 
     </LinearLayout>
 
-    <Button
+    <ImageButton
         android:id="@+id/lmb"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#673AB7"
+        android:background="#00000000"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:focusable="false"
+        android:src="@drawable/lmb"
+        android:scaleType="centerInside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintEnd_toStartOf="@id/scroll_wheel"
-        app:layout_constraintHeight_percent="0.2" />
+        app:layout_constraintHeight_percent="0.19" />
 
     <ImageView
         android:id="@+id/left_click_ic"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:clickable="false"
         android:elevation="2dp"
+        android:focusable="false"
         android:scaleType="centerInside"
         android:scaleX="0.29"
         android:scaleY="0.29"
-        android:clickable="false"
-        android:focusable="false"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:src="@drawable/left_click"
         app:layout_constraintBottom_toBottomOf="@id/lmb"
         app:layout_constraintEnd_toEndOf="@id/lmb"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/lmb"
-        app:layout_constraintTop_toTopOf="@id/lmb" />
+        app:layout_constraintTop_toTopOf="@id/lmb"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <View
+    <ImageView
         android:id="@+id/scroll_wheel"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="?android:attr/colorPrimary"
+        android:src="@drawable/mmb"
+        android:background="#00000000"
         android:layout_marginVertical="5dp"
         android:layout_marginHorizontal="5dp"
         app:layout_constraintBottom_toTopOf="@id/trackpad"
         app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintStart_toEndOf="@id/lmb"
         app:layout_constraintEnd_toStartOf="@id/rmb"
-        app:layout_constraintWidth_percent="0.1"
+        app:layout_constraintWidth_percent="0.125"
         app:layout_constraintHeight_percent="0.2" />
 
     <ImageView
@@ -97,23 +117,26 @@
         app:layout_constraintDimensionRatio="1"
         android:src="@drawable/scroll_wheel"
         android:scaleType="centerInside"
+        android:scaleY="0.6"
+        android:scaleX="0.6"
         app:layout_constraintStart_toStartOf="@id/scroll_wheel"
         app:layout_constraintEnd_toEndOf="@id/scroll_wheel"
         app:layout_constraintTop_toTopOf="@id/scroll_wheel"
         app:layout_constraintBottom_toBottomOf="@id/scroll_wheel"/>
 
-    <Button
+    <ImageButton
         android:id="@+id/rmb"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="5dp"
-        android:background="#673AB7"
+        android:src="@drawable/rmb"
+        android:scaleType="centerInside"
+        android:background="#00000000"
         android:focusable="false"
         app:layout_constraintStart_toEndOf="@id/scroll_wheel"
-        app:layout_constraintTop_toBottomOf="@id/header"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.2" />
+        app:layout_constraintTop_toTopOf="@id/lmb"
+        app:layout_constraintBottom_toBottomOf="@id/lmb"
+        app:layout_constraintEnd_toEndOf="@id/trackpad"
+        app:layout_constraintHeight_percent="0.19" />
 
     <ImageView
         android:id="@+id/right_click_ic"
@@ -127,37 +150,26 @@
         android:clickable="false"
         android:focusable="false"
         app:layout_constraintStart_toStartOf="@id/rmb"
-        app:layout_constraintEnd_toEndOf="@id/rmb"
+        app:layout_constraintEnd_toEndOf="@id/trackpad"
         app:layout_constraintTop_toTopOf="@id/rmb"
         app:layout_constraintBottom_toBottomOf="@id/rmb" />
 
-    <View
+    <ImageView
         android:id="@+id/trackpad"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#673AB7"
+        android:background="#00000000"
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"
         android:text="Trackpad area"
+        android:scaleX="1.07"
+        android:scaleY="1.01"
+        android:src="@drawable/trackpad"
         app:layout_constraintTop_toBottomOf="@id/lmb"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
-
-    <ImageView
-        android:id="@+id/trackpad_ic"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:elevation="2dp"
-        android:scaleType="centerInside"
-        android:scaleX="0.29"
-        android:scaleY="0.29"
-        android:src="@drawable/move"
-        app:layout_constraintBottom_toBottomOf="@id/trackpad"
-        app:layout_constraintEnd_toEndOf="@id/trackpad"
-        app:layout_constraintStart_toStartOf="@id/trackpad"
-        app:layout_constraintTop_toTopOf="@id/trackpad" />
 
     <Button
         android:id="@+id/disconnect"
