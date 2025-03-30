@@ -9,8 +9,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 
 import ojt.g1.connectivity.NetworkHelper;
 import ojt.g1.layoutediting.LayoutEditor;
@@ -230,6 +236,35 @@ public class Main extends AppCompatActivity {
             }
             return false;
         };
+    }
+
+    public void initializeTasks() {
+        File tasksDirectory = new File(getPackageName(), "tasks");
+        File[] files = tasksDirectory.listFiles();
+        Task[] tasks = new Task[files.length];
+        for (int i = 0; i < files.length; i++) {
+            String[] data = new String[4];
+            try (BufferedReader bufferedReader = new BufferedReader(new FileReader(files[i]))) {
+                data[0] = bufferedReader.readLine(); // subj
+                data[1] = bufferedReader.readLine(); // taskn
+                data[2] = bufferedReader.readLine(); // dued
+                data[3] = bufferedReader.readLine(); // duet
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            tasks[i] = new Task();
+            tasks[i].subject = data[0];
+            tasks[i].taskName = data[1];
+            tasks[i].dueDate = data[2];
+            tasks[i].dueTime = data[3];
+        }
+    }
+
+    public static class Task {
+        String subject;
+        String taskName;
+        String dueDate;
+        String dueTime;
     }
 
     @Override
