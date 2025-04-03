@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    android:layout_height="100dp"
+    android:layout_marginHorizontal="15dp"
+    android:layout_marginBottom="15dp"
+    android:elevation="2dp"
+    android:id="@+id/shortcut_item"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/holder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/long_template"
+        android:elevation="2dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:background="#00000000"
+        android:elevation="2dp" />
+
+    <TextView
+        android:id="@+id/shortcut_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:maxLines="1"
+        android:elevation="2dp"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMaxTextSize="70dp"
+        android:autoSizeMinTextSize="10dp"
+        android:autoSizeStepGranularity="1dp"
+        android:text="Ctrl + Shift + S"
+        android:layout_margin="15dp"
+        android:fontFamily="@font/monocraft"
+        android:gravity="center_vertical|center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

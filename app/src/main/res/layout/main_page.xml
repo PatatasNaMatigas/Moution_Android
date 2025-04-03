@@ -58,6 +58,16 @@
             android:layout_marginEnd="10dp"
             android:layout_weight="1" />
 
+        <ImageButton
+            android:id="@+id/disconnect"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="#00000000"
+            android:src="@drawable/shortcuts"
+            android:layout_marginStart="10dp"
+            android:scaleType="centerInside"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1" />
     </LinearLayout>
 
     <ImageButton
@@ -171,11 +181,354 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <Button
-        android:id="@+id/disconnect"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <View
+        android:id="@+id/darken_filter"
+        android:elevation="2dp"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000" />
+
+    <ImageButton
+        android:id="@+id/exit"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/exit"
+        android:scaleType="centerInside"
+        android:background="#80000000"
+        android:elevation="2dp"
+        android:visibility="gone"
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintWidth_percent="0.1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/shortcuts"
+        android:elevation="2dp"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/shortcut_div"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="2dp"
+            android:src="@drawable/add_shortcut_bg"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintWidth_percent="0.8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/shortcuts_title"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="2dp"
+            app:layout_constraintHeight_percent="0.07"
+            android:textColor="@color/white"
+            android:maxLines="1"
+            android:paddingHorizontal="40dp"
+            android:paddingTop="20dp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="40dp"
+            android:autoSizeMinTextSize="10dp"
+            android:autoSizeStepGranularity="1dp"
+            android:text="Shortcuts"
+            android:fontFamily="@font/monocraft"
+            android:textAlignment="center"
+            app:layout_constraintTop_toTopOf="@id/shortcut_div"
+            app:layout_constraintStart_toStartOf="@id/shortcut_div"
+            app:layout_constraintEnd_toEndOf="@id/shortcut_div" />
+        
+        <ImageButton
+            android:id="@+id/copy_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="15dp"
+            android:elevation="2dp"
+            app:layout_constraintDimensionRatio="2:1"
+            android:scaleType="centerInside"
+            android:background="#00000000"
+            android:src="@drawable/long_template"
+            app:layout_constraintStart_toStartOf="@id/shortcut_div"
+            app:layout_constraintEnd_toStartOf="@id/paste_button"
+            app:layout_constraintTop_toBottomOf="@id/shortcuts_title" />
+
+        <TextView
+            android:id="@+id/copy_text"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="15dp"
+            android:elevation="2dp"
+            android:textColor="@color/white"
+            android:maxLines="1"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="40dp"
+            android:autoSizeMinTextSize="10dp"
+            android:autoSizeStepGranularity="1dp"
+            android:text="Copy"
+            android:fontFamily="@font/monocraft"
+            android:gravity="center_vertical|center"
+            app:layout_constraintStart_toStartOf="@id/copy_button"
+            app:layout_constraintEnd_toEndOf="@id/copy_button"
+            app:layout_constraintBottom_toBottomOf="@id/copy_button"
+            app:layout_constraintTop_toTopOf="@id/copy_button" />
+
+        <ImageButton
+            android:id="@+id/paste_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="15dp"
+            android:elevation="2dp"
+            app:layout_constraintDimensionRatio="2:1"
+            android:scaleType="centerInside"
+            android:background="#00000000"
+            android:src="@drawable/long_template"
+            app:layout_constraintStart_toEndOf="@id/copy_button"
+            app:layout_constraintEnd_toEndOf="@id/shortcut_div"
+            app:layout_constraintTop_toBottomOf="@id/shortcuts_title" />
+
+        <TextView
+            android:id="@+id/paste_text"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="15dp"
+            android:elevation="2dp"
+            android:textColor="@color/white"
+            android:maxLines="1"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="40dp"
+            android:autoSizeMinTextSize="10dp"
+            android:autoSizeStepGranularity="1dp"
+            android:text="Paste"
+            android:fontFamily="@font/monocraft"
+            android:gravity="center_vertical|center"
+            app:layout_constraintStart_toStartOf="@id/paste_button"
+            app:layout_constraintEnd_toEndOf="@id/paste_button"
+            app:layout_constraintBottom_toBottomOf="@id/paste_button"
+            app:layout_constraintTop_toTopOf="@id/paste_button" />
+
+        <ImageButton
+            android:id="@+id/undo_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="15dp"
+            android:elevation="2dp"
+            app:layout_constraintDimensionRatio="2:1"
+            android:scaleType="centerInside"
+            android:background="#00000000"
+            android:src="@drawable/long_template"
+            app:layout_constraintStart_toStartOf="@id/shortcut_div"
+            app:layout_constraintEnd_toStartOf="@id/redo_button"
+            app:layout_constraintTop_toBottomOf="@id/copy_button" />
+
+        <TextView
+            android:id="@+id/undo_text"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="15dp"
+            android:elevation="2dp"
+            android:textColor="@color/white"
+            android:maxLines="1"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="40dp"
+            android:autoSizeMinTextSize="10dp"
+            android:autoSizeStepGranularity="1dp"
+            android:text="Undo"
+            android:fontFamily="@font/monocraft"
+            android:gravity="center_vertical|center"
+            app:layout_constraintStart_toStartOf="@id/undo_button"
+            app:layout_constraintEnd_toEndOf="@id/undo_button"
+            app:layout_constraintBottom_toBottomOf="@id/undo_button"
+            app:layout_constraintTop_toTopOf="@id/undo_button" />
+
+        <ImageButton
+            android:id="@+id/redo_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="15dp"
+            android:elevation="2dp"
+            app:layout_constraintDimensionRatio="2:1"
+            android:scaleType="centerInside"
+            android:background="#00000000"
+            android:src="@drawable/long_template"
+            app:layout_constraintStart_toEndOf="@id/undo_button"
+            app:layout_constraintEnd_toEndOf="@id/shortcut_div"
+            app:layout_constraintTop_toBottomOf="@id/copy_button" />
+
+        <TextView
+            android:id="@+id/redo_text"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="15dp"
+            android:elevation="2dp"
+            android:textColor="@color/white"
+            android:maxLines="1"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="40dp"
+            android:autoSizeMinTextSize="10dp"
+            android:autoSizeStepGranularity="1dp"
+            android:text="Redo"
+            android:fontFamily="@font/monocraft"
+            android:gravity="center_vertical|center"
+            app:layout_constraintStart_toStartOf="@id/redo_button"
+            app:layout_constraintEnd_toEndOf="@id/redo_button"
+            app:layout_constraintBottom_toBottomOf="@id/redo_button"
+            app:layout_constraintTop_toTopOf="@id/redo_button" />
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/add_shortcut_button"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_margin="15dp"-->
+<!--            android:elevation="2dp"-->
+<!--            app:layout_constraintDimensionRatio="2:1"-->
+<!--            android:scaleType="centerInside"-->
+<!--            android:background="#00000000"-->
+<!--            android:src="@drawable/long_template"-->
+<!--            app:layout_constraintStart_toStartOf="@id/shortcut_div"-->
+<!--            app:layout_constraintEnd_toEndOf="@id/shortcut_div"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/shortcut_div"-->
+<!--            app:layout_constraintHeight_percent="0.1" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/add_shortcut_text"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_margin="15dp"-->
+<!--            android:elevation="2dp"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:maxLines="1"-->
+<!--            android:autoSizeTextType="uniform"-->
+<!--            android:autoSizeMaxTextSize="40dp"-->
+<!--            android:autoSizeMinTextSize="10dp"-->
+<!--            android:autoSizeStepGranularity="1dp"-->
+<!--            android:text="Add Shortcut"-->
+<!--            android:fontFamily="@font/monocraft"-->
+<!--            android:gravity="center_vertical"-->
+<!--            app:layout_constraintStart_toStartOf="@id/add_shortcut_button"-->
+<!--            app:layout_constraintEnd_toEndOf="@id/add_shortcut_button"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/add_shortcut_button"-->
+<!--            app:layout_constraintTop_toTopOf="@id/add_shortcut_button"-->
+<!--            app:layout_constraintHeight_percent="0.1" />-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/add_shortcut"
+        android:visibility="gone"
+        android:elevation="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/shortcut"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="2dp"
+            android:src="@drawable/add_shortcut_bg"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintWidth_percent="0.8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/shortcut_title"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="2dp"
+            app:layout_constraintHeight_percent="0.07"
+            android:textColor="@color/white"
+            android:maxLines="1"
+            android:paddingHorizontal="40dp"
+            android:paddingTop="20dp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="40dp"
+            android:autoSizeMinTextSize="10dp"
+            android:autoSizeStepGranularity="1dp"
+            android:text="Add Shortcuts"
+            android:fontFamily="@font/monocraft"
+            android:textAlignment="center"
+            app:layout_constraintTop_toTopOf="@id/shortcut"
+            app:layout_constraintStart_toStartOf="@id/shortcut"
+            app:layout_constraintEnd_toEndOf="@id/shortcut" />
+
+        <View
+            android:id="@+id/keys"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            app:layout_constraintHeight_percent="0.12"
+            app:layout_constraintTop_toBottomOf="@id/shortcut_title"
+            app:layout_constraintStart_toStartOf="@id/shortcut"
+            app:layout_constraintEnd_toEndOf="@id/shortcut" />
+
+        <EditText
+            android:id="@+id/shortcut_form"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="20dp"
+            android:autoSizeMaxTextSize="40dp"
+            android:autoSizeMinTextSize="10dp"
+            android:autoSizeStepGranularity="1dp"
+            android:autoSizeTextType="uniform"
+            android:elevation="2dp"
+            android:fontFamily="@font/monocraft"
+            android:maxLines="1"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/create_shortcut"
+            app:layout_constraintEnd_toEndOf="@id/keys"
+            app:layout_constraintHeight_percent="0.1"
+            app:layout_constraintStart_toStartOf="@id/keys"
+            app:layout_constraintTop_toTopOf="@id/keys" />
+
+        <ImageButton
+            android:id="@+id/create_shortcut"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/long_template"
+            android:scaleType="centerInside"
+            android:elevation="2dp"
+            android:background="#00000000"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginBottom="30dp"
+            app:layout_constraintHeight_percent="0.1"
+            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintStart_toStartOf="@id/shortcut"
+            app:layout_constraintEnd_toEndOf="@id/keys"
+            app:layout_constraintBottom_toBottomOf="@id/shortcut" />
+
+        <TextView
+            android:id="@+id/create_shortcut_title"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="2dp"
+            android:textColor="@color/white"
+            android:maxLines="1"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="50dp"
+            android:autoSizeMinTextSize="10dp"
+            android:autoSizeStepGranularity="1dp"
+            android:text="Create"
+            android:layout_marginHorizontal="10dp"
+            android:fontFamily="@font/monocraft"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="@id/create_shortcut"
+            app:layout_constraintEnd_toEndOf="@id/create_shortcut"
+            app:layout_constraintTop_toTopOf="@id/create_shortcut"
+            app:layout_constraintBottom_toBottomOf="@id/create_shortcut" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
