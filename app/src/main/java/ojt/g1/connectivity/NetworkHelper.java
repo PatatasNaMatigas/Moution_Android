@@ -99,7 +99,6 @@ public class NetworkHelper {
             if (socket != null) socket.close();
             if (writer != null) writer.close();
             if (reader != null) reader.close();
-            context.startActivity(new Intent(context, Moution.class));
         } catch (Exception e) {
             e.printStackTrace();
         }

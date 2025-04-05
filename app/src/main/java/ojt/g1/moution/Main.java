@@ -2,6 +2,7 @@ package ojt.g1.moution;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -14,25 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.stream.Stream;
 
 import ojt.g1.connectivity.NetworkHelper;
-import ojt.g1.layoutediting.LayoutEditor;
-import ojt.g1.moution.adapter.ShortCutAdapter;
 
 public class Main extends AppCompatActivity {
 
-    private static final float SENSITIVITY = 1.5f;
+    public static float SENSITIVITY = 1.5f;
     private static final float MIN_MOVE_THRESHOLD = SENSITIVITY / 2;
-    private static final float SCROLL_MOVE_THRESHOLD = 5;
+    public static float SCROLL_MOVE_THRESHOLD = 5;
     private static float lastTPX;
     private static float lastTPY;
     private static float lastScrollY;
@@ -104,6 +94,11 @@ public class Main extends AppCompatActivity {
 
         findViewById(R.id.undo_button).setOnClickListener(v -> {
             networkHelper.sendMessage("shc%undo");
+        });
+
+        findViewById(R.id.settings).setOnClickListener(view -> {
+            startActivity(new Intent(this, Settings.class));
+            finish();
         });
     }
 
